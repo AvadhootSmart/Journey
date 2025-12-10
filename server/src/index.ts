@@ -7,6 +7,7 @@ import { entryRouter } from "./routes/entry.route.ts";
 
 
 const app = express();
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -20,6 +21,8 @@ app.use("/journal", journalRouter);
 app.use("/user", userRouter)
 app.use("/entry", entryRouter)
 
-app.listen(8000, () => {
-  console.log("Server started on port 8000");
+app.listen(PORT, () => {
+  console.log("Server started on port " + PORT);
 });
+
+export default app;
