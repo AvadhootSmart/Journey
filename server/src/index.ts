@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
-import { authRouter } from "./routes/auth.route.ts";
-import { journalRouter } from "./routes/journal.route.ts";
-import { userRouter } from "./routes/user.route.ts";
-import { entryRouter } from "./routes/entry.route.ts";
+import { authRouter } from "./routes/auth.route.js";
+import { journalRouter } from "./routes/journal.route.js";
+import { userRouter } from "./routes/user.route.js";
+import { entryRouter } from "./routes/entry.route.js";
 
 
 const app = express();
