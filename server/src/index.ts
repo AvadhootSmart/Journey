@@ -21,8 +21,11 @@ app.use("/journal", journalRouter);
 app.use("/user", userRouter)
 app.use("/entry", entryRouter)
 
-app.listen(PORT, () => {
-  console.log("Server started on port " + PORT);
-});
+// Only start the server in development mode
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log("Server started on port " + PORT);
+  });
+}
 
 export default app;
