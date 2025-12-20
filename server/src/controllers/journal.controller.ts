@@ -1,6 +1,6 @@
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.js";
 import type { Response } from "express";
-import type { AuthRequest } from "../middleware/auth";
+import type { AuthRequest } from "../middleware/auth.js";
 
 export async function createJournal(req: AuthRequest, res: Response) {
   try {

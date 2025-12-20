@@ -1,5 +1,5 @@
-import prisma from "../lib/prisma";
-import type { AuthRequest } from "../middleware/auth";
+import prisma from "../lib/prisma.js";
+import type { AuthRequest } from "../middleware/auth.js";
 import type { Response } from "express";
 
 export async function createEntry(req: AuthRequest, res: Response) {

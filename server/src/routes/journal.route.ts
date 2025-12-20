@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { isAuthenticated } from "../middleware/auth";
-import { createJournal, getJournalById, getJournalUsers, joinJournal } from "../controllers/journal.controller";
+import { isAuthenticated } from "../middleware/auth.js";
+import { createJournal, getJournalById, getJournalUsers, joinJournal } from "../controllers/journal.controller.js";
 
 const router = Router();
 

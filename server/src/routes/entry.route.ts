@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { isAuthenticated } from "../middleware/auth";
-import { createEntry, getEntriesForJournal, getEntriesForJournalByDate, getEntriesForJournalDates, getUserEntriesForJournal } from "../controllers/entry.controller";
+import { isAuthenticated } from "../middleware/auth.js";
+import { createEntry, getEntriesForJournal, getEntriesForJournalByDate, getEntriesForJournalDates, getUserEntriesForJournal } from "../controllers/entry.controller.js";
 
 const router = Router();
 
