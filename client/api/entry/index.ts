@@ -2,7 +2,7 @@ import api from "@/config/axios.config";
 import { getToken } from "@/lib/utils";
 import { toast } from "sonner";
 
-export async function createEntry(journalId: string, description: string) {
+export async function createEntry(journalId: string, description: string, imgs: string[] = []) {
     const token = getToken();
     try {
         const response = await api.post(
@@ -10,6 +10,7 @@ export async function createEntry(journalId: string, description: string) {
             {
                 journalId,
                 description,
+                imgs,
             },
             {
                 headers: {

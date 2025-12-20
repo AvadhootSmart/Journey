@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Palette, Layers } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { EntryDialog } from './EntryDialog';
@@ -9,11 +9,11 @@ interface JournalCalendarProps {
     currentUserId: string | null;
     entryDates: Record<string, string[]>; // "YYYY-MM-DD": [userId1, userId2]
     userColors: Record<string, string>;
+    journalCreatedAt?: string;
 }
 
-export function JournalCalendar({ journalId, currentUserId, entryDates, userColors }: JournalCalendarProps) {
+export function JournalCalendar({ journalId, currentUserId, entryDates, userColors, journalCreatedAt }: JournalCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [viewMode, setViewMode] = useState<'gradient' | 'solid'>('gradient');
 
     const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
     const firstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
@@ -52,33 +52,15 @@ export function JournalCalendar({ journalId, currentUserId, entryDates, userColo
 
     const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    const getCellBackground = (date: Date) => {
-        const dateStr = date.toISOString().split('T')[0];
-        const userIds = entryDates[dateStr];
-
-        if (!userIds || userIds.length === 0) {
-            return "bg-zinc-100/50 dark:bg-zinc-900/30";
-        }
-
-        const colors = userIds.map(id => userColors[id] || "#cbd5e1");
-
-        if (viewMode === 'solid' || colors.length === 1) {
-            return ""; // Handled by style
-        }
-
-        // Gradient logic: construct a linear gradient string
-        return `linear-gradient(135deg, ${colors.join(', ')})`;
-    };
-
     const getCellStyle = (date: Date) => {
         const dateStr = date.toISOString().split('T')[0];
         const userIds = entryDates[dateStr];
 
         if (!userIds || userIds.length === 0) return {};
 
-        const colors = userIds.map(id => userColors[id] || "#cbd5e1");
+        const colors = userIds.map((id: string) => userColors[id] || "#cbd5e1");
 
-        if (viewMode === 'solid' || colors.length === 1) {
+        if (colors.length === 1) {
             return { backgroundColor: colors[0] };
         }
 
@@ -87,27 +69,9 @@ export function JournalCalendar({ journalId, currentUserId, entryDates, userColo
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-2 p-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm w-fit">
-                    <Button
-                        variant={viewMode === 'gradient' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        className={cn("rounded-lg flex items-center gap-2 px-4", viewMode === 'gradient' && "bg-[#40C18D]/10 text-[#40C18D] hover:bg-[#40C18D]/20")}
-                        onClick={() => setViewMode('gradient')}
-                    >
-                        <Palette className="w-4 h-4" /> Gradient
-                    </Button>
-                    <Button
-                        variant={viewMode === 'solid' ? 'secondary' : 'ghost'}
-                        size="sm"
-                        className={cn("rounded-lg flex items-center gap-2 px-4", viewMode === 'solid' && "bg-[#40C18D]/10 text-[#40C18D] hover:bg-[#40C18D]/20")}
-                        onClick={() => setViewMode('solid')}
-                    >
-                        <Layers className="w-4 h-4" /> Solid
-                    </Button>
-                </div>
+            <div className="flex items-center justify-center sm:justify-start gap-4">
 
-                <div className="flex items-center gap-4 bg-white dark:bg-zinc-900 p-1 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm w-fit">
+                <div className="flex items-center justify-center sm:justify-start gap-4 bg-white dark:bg-zinc-900 p-1 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm sm:w-fit w-full">
                     <Button variant="ghost" size="icon" className="rounded-lg" onClick={prevMonth}>
                         <ChevronLeft className="w-5 h-5" />
                     </Button>
@@ -145,6 +109,7 @@ export function JournalCalendar({ journalId, currentUserId, entryDates, userColo
                                 date={date}
                                 journalId={journalId}
                                 currentUserId={currentUserId}
+                                journalCreatedAt={journalCreatedAt}
                             >
                                 <div
                                     style={style}

@@ -4,7 +4,7 @@ import type { Response } from "express";
 
 export async function createEntry(req: AuthRequest, res: Response) {
   try {
-    const { journalId, description } = req.body;
+    const { journalId, description, imgs } = req.body;
     const userId = req.user?.userId;
 
     if (!userId) {
@@ -35,6 +35,7 @@ export async function createEntry(req: AuthRequest, res: Response) {
     const entry = await prisma.entry.create({
       data: {
         description,
+        imgs: imgs || [],
         journal: {
           connect: {
             id: journalId,

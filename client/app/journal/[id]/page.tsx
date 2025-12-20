@@ -87,14 +87,12 @@ export default function JournalPage({ params }: { params: Promise<{ id: string }
 
       <div className="flex-grow p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">Calendar View</h2>
-          </div>
           <JournalCalendar
             journalId={id}
             currentUserId={currentUser?.id || null}
             entryDates={entryDates}
             userColors={userColors}
+            journalCreatedAt={journal?.createdAt}
           />
         </div>
       </div>

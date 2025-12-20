@@ -4,6 +4,7 @@ import { authRouter } from "./routes/auth.route.js";
 import { journalRouter } from "./routes/journal.route.js";
 import { userRouter } from "./routes/user.route.js";
 import { entryRouter } from "./routes/entry.route.js";
+import { uploadRouter } from "./routes/upload.route.js";
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/auth", authRouter);
 app.use("/journal", journalRouter);
 app.use("/user", userRouter)
 app.use("/entry", entryRouter)
+app.use("/upload", uploadRouter)
 
 // Only start the server in development mode
 if (process.env.NODE_ENV !== 'production') {
