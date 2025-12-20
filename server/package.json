@@ -4,9 +4,8 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "bun --watch run src/index.ts",
+        "dev": "bun --watch src/index.ts",
         "build": "prisma generate && prisma migrate deploy && tsc",
-        "start": "node dist/index.js",
         "vercel-build": "pnpm build"
     },
     "devDependencies": {
