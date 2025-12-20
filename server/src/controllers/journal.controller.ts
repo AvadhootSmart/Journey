@@ -161,3 +161,38 @@ export async function getUserJournals(req: AuthRequest, res: Response) {
       .json({ error: "Internal server error", message: error });
   }
 }
+
+export async function getJournalById(req: AuthRequest, res: Response) {
+  try {
+    const { journalId } = req.params;
+
+    if (!journalId) {
+      return res.status(400).json({ error: "Journal ID is required" });
+    }
+
+    const journal = await prisma.journal.findUnique({
+      where: { id: journalId },
+      include: {
+        users: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!journal) {
+      return res.status(404).json({ error: "Journal not found" });
+    }
+
+    return res.status(200).json(journal);
+  } catch (error) {
+    console.error("Error getting journal by id:", error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error", message: error });
+  }
+}
+

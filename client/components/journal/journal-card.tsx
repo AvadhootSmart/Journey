@@ -7,6 +7,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { UserPlus } from "lucide-react";
+import { toast } from "sonner";
 
 interface User {
     id: string;
@@ -15,19 +18,40 @@ interface User {
 }
 
 interface JournalCardProps {
+    id: string;
     title: string;
     description: string;
     users: User[];
 }
 
-const JournalCard = ({ title, description, users }: JournalCardProps) => {
+const JournalCard = ({ id, title, description, users }: JournalCardProps) => {
+    const copyId = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigator.clipboard.writeText(id);
+        toast.success("Journal ID copied to clipboard");
+    };
+
     return (
-        <Card className="hover:shadow-md transition-shadow cursor-pointer">
+        <Card className="hover:shadow-md transition-shadow cursor-pointer relative group">
             <CardHeader>
-                <CardTitle className="text-xl font-semibold">{title}</CardTitle>
-                <CardDescription className="line-clamp-2">
-                    {description}
-                </CardDescription>
+                <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                        <CardTitle className="text-xl font-semibold">{title}</CardTitle>
+                        <CardDescription className="line-clamp-2">
+                            {description}
+                        </CardDescription>
+                    </div>
+                    <Button
+                        variant="default"
+                        size="icon"
+                        className="rounded-2xl cursor-pointer"
+                        onClick={copyId}
+                        title="Invite to journal"
+                    >
+                        <UserPlus className="h-4 w-4" />
+                    </Button>
+                </div>
             </CardHeader>
             <CardContent>
                 <div className="flex items-center justify-between mt-4">

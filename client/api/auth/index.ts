@@ -34,3 +34,17 @@ export const registerUser = async (
     console.error("auth error", error);
   }
 };
+
+export const getMe = async (token: string) => {
+  try {
+    const response = await api.get("/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user", error);
+  }
+};
+

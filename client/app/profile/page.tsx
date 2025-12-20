@@ -2,13 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import useUser from "@/store/user-store";
-import { getUserJournals } from "@/api/journal";
+import { getUserJournals, joinJournal } from "@/api/journal";
 import JournalCard from "@/components/journal/journal-card";
 import CreateJournalModal from "@/components/journal/create-journal-modal";
 import { Button } from "@/components/ui/button";
-import { Plus, Book } from "lucide-react";
+import { Plus, Book, Users } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 interface Journal {
   id: string;
@@ -25,6 +32,22 @@ const ProfilePage = () => {
   const { user, token } = useUser();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [loading, setLoading] = useState(true);
+  const [joinId, setJoinId] = useState("");
+  const [joining, setJoining] = useState(false);
+
+  const handleJoinJournal = async () => {
+    if (!joinId) return;
+    setJoining(true);
+    try {
+      await joinJournal(joinId);
+      setJoinId("");
+      fetchJournals();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setJoining(false);
+    }
+  };
 
   const fetchJournals = async () => {
     try {
@@ -74,11 +97,40 @@ const ProfilePage = () => {
             Your Journals
           </h2>
           {journals.length > 0 && (
-            <CreateJournalModal onJournalCreated={fetchJournals}>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" /> New Journal
-              </Button>
-            </CreateJournalModal>
+            <div className="flex gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline">
+                    <Users className="mr-2 h-4 w-4" /> Join Journal
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80">
+                  <div className="flex flex-col gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">Join Journal</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Enter the ID of the journal you want to join.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Journal ID"
+                        value={joinId}
+                        onChange={(e) => setJoinId(e.target.value)}
+                      />
+                      <Button onClick={handleJoinJournal} disabled={joining}>
+                        {joining ? "Joining..." : "Join"}
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <CreateJournalModal onJournalCreated={fetchJournals}>
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" /> New Journal
+                </Button>
+              </CreateJournalModal>
+            </div>
           )}
         </div>
 
@@ -91,16 +143,19 @@ const ProfilePage = () => {
         ) : journals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {journals.map((journal) => (
-              <JournalCard
-                key={journal.id}
-                title={journal.title}
-                description={journal.description || "No description"}
-                users={journal.users.map((u) => ({
-                  id: u.id,
-                  name: u.username || "Unknown", // Map username to name
-                  email: u.email,
-                }))}
-              />
+              <Link href={`/journal/${journal.id}`} key={journal.id}>
+                <JournalCard
+                  key={journal.id}
+                  id={journal.id}
+                  title={journal.title}
+                  description={journal.description || "No description"}
+                  users={journal.users.map((u) => ({
+                    id: u.id,
+                    name: u.username || "Unknown", // Map username to name
+                    email: u.email,
+                  }))}
+                />
+              </Link>
             ))}
           </div>
         ) : (
@@ -114,11 +169,40 @@ const ProfilePage = () => {
               You haven't created or joined any journals. Start your journey by
               creating one.
             </p>
-            <CreateJournalModal onJournalCreated={fetchJournals}>
-              <Button size="lg">
-                <Plus className="mr-2 h-4 w-4" /> Create Journal
-              </Button>
-            </CreateJournalModal>
+            <div className="flex gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="lg">
+                    <Users className="mr-2 h-4 w-4" /> Join Journal
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80 text-left">
+                  <div className="flex flex-col gap-4">
+                    <div className="space-y-2">
+                      <h4 className="font-medium leading-none">Join Journal</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Enter the ID of the journal you want to join.
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Journal ID"
+                        value={joinId}
+                        onChange={(e) => setJoinId(e.target.value)}
+                      />
+                      <Button onClick={handleJoinJournal} disabled={joining}>
+                        {joining ? "Joining..." : "Join"}
+                      </Button>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <CreateJournalModal onJournalCreated={fetchJournals}>
+                <Button size="lg">
+                  <Plus className="mr-2 h-4 w-4" /> Create Journal
+                </Button>
+              </CreateJournalModal>
+            </div>
           </div>
         )}
       </div>

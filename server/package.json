@@ -5,10 +5,9 @@
     "private": true,
     "scripts": {
         "dev": "bun --watch run src/index.ts",
-        "generate": "prisma generate",
-        "build": "prisma generate",
+        "build": "prisma generate && prisma migrate deploy && tsc",
         "postinstall": "prisma generate",
-        "vercel-build": "prisma generate"
+        "vercel-build": "bun build src/index.ts --out-dir dist"
     },
     "devDependencies": {
         "@types/bun": "latest",

@@ -31,7 +31,7 @@ const item = {
 };
 
 export default function Home() {
-  const { token } = useUser();
+  const { token, user } = useUser();
 
   const handleLogout = () => {
     localStorage.removeItem("journey-user");
@@ -64,7 +64,6 @@ export default function Home() {
             <motion.div variants={item} className="max-w-3xl space-y-4">
               <h1
                 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70"
-                onDoubleClick={handleLogout}
               >
                 Capture Your Journey, <br />
                 <span className="text-primary">Together.</span>
@@ -80,7 +79,7 @@ export default function Home() {
               variants={item}
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
-              {token ? (
+              {token && user ? (
                 <Link href="/profile">
                   <Button
                     size="lg"

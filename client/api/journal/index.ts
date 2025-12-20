@@ -42,3 +42,41 @@ export async function getUserJournals() {
     toast.error("Error fetching user journals");
   }
 }
+
+export async function getJournalById(journalId: string) {
+  const token = getToken();
+  try {
+    const response = await api.get(`/journal/${journalId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching journal", error);
+    toast.error("Error fetching journal");
+  }
+}
+
+export async function joinJournal(journalId: string) {
+  const token = getToken();
+  try {
+    const response = await api.post(
+      "/journal/join",
+      { journalId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      toast.success("Joined journal successfully");
+    }
+    return response.data;
+  } catch (error: any) {
+    console.error("Error joining journal", error);
+    toast.error(error.response?.data?.error || "Error joining journal");
+  }
+}

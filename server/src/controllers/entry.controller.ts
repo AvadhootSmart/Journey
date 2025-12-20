@@ -26,7 +26,7 @@ export async function createEntry(req: AuthRequest, res: Response) {
       return res.status(404).json({ error: "Journal not found" });
     }
 
-    if (journal.users.some((user) => user.id !== userId)) {
+    if (!journal.users.some((user) => user.id === userId)) {
       return res
         .status(400)
         .json({ error: "You are not a member of this journal" });
@@ -111,14 +111,19 @@ export async function getEntriesForJournalByDate(
       return res.status(400).json({ error: "Journal ID and Date is required" });
     }
 
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
     const entry = await prisma.entry.findMany({
       where: {
         journal: {
           id: journalId,
         },
         createdAt: {
-          gte: new Date(date),
-          lte: new Date(date),
+          gte: startOfDay,
+          lte: endOfDay,
         },
       },
       include: {
@@ -190,6 +195,7 @@ export async function getEntriesForJournalDates(
       },
       select: {
         createdAt: true,
+        userId: true,
       },
     });
 
