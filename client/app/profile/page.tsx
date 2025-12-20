@@ -91,7 +91,7 @@ const ProfilePage = () => {
 
       {/* Journals Section */}
       <div>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center sm:justify-between flex-col gap-6 sm:flex-row mb-6">
           <h2 className="text-2xl font-semibold flex items-center gap-2">
             <Book className="h-6 w-6" />
             Your Journals

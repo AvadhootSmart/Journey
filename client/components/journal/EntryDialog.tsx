@@ -92,10 +92,10 @@ export function EntryDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className="min-w-4xl max-h-[90vh] flex flex-col p-0 overflow-hidden rounded-[32px] border-none shadow-2xl">
-                <div className="p-8 pb-4">
-                    <DialogHeader className="mb-6">
-                        <DialogTitle className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
+            <DialogContent className="sm:min-w-4xl max-h-[90vh] flex flex-col p-0 overflow-hidden rounded-xl border-none shadow-2xl">
+                <div className="sm:p-8 p-4 pb-4">
+                    <DialogHeader className="mb-6 text-left">
+                        <DialogTitle className="sm:text-2xl text-lg font-bold text-zinc-900 dark:text-zinc-100">
                             <span>{formattedDate}</span>
                         </DialogTitle>
                     </DialogHeader>

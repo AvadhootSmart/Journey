@@ -45,7 +45,7 @@ const JournalCard = ({ id, title, description, users }: JournalCardProps) => {
                     <Button
                         variant="default"
                         size="icon"
-                        className="rounded-2xl cursor-pointer"
+                        className="rounded-lg cursor-pointer"
                         onClick={copyId}
                         title="Invite to journal"
                     >

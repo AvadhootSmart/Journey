@@ -56,7 +56,7 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
           <DialogTrigger>{children}</DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="text-2xl font-semibold font-Montserrat">
+              <DialogTitle className="text-2xl font-semibold text-left">
                 Create An Account
               </DialogTitle>
             </DialogHeader>
