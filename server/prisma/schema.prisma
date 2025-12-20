@@ -9,46 +9,35 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-
-  email     String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
   password  String
   username  String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  journals  Journal[] @relation("UserJournals")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   entries   Entry[]
+  journals  Journal[] @relation("UserJournals")
 }
 
 model Journal {
-  id        String   @id @default(uuid())
-
-  title     String 
+  id          String   @id @default(uuid())
+  title       String
   description String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  users     User[]   @relation("UserJournals")
-
-  entries   Entry[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  entries     Entry[]
+  users       User[]   @relation("UserJournals")
 }
 
 model Entry {
-  id            String   @id @default(uuid())
-
-  imgs          String[]
-  description   String
-  habits        String[]
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-
-  journalId     String
-  journal       Journal  @relation(fields: [journalId], references: [id])
+  id          String   @id @default(uuid())
+  imgs        String[]
+  description String
+  habits      String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  journalId   String
+  journal     Journal  @relation(fields: [journalId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 }
