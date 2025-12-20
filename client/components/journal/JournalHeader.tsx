@@ -26,10 +26,10 @@ export function JournalHeader({ journalId, title, description, users, onEntryCre
                 {/* Subtle background plant icon or pattern could go here */}
                 <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div className="space-y-3 sm:space-y-2">
-                        <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 flex items-center gap-2">
+                        <h1 className="text-2xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
                             {title}
                         </h1>
-                        <p className="text-zinc-500 text-sm leading-relaxed">{description}</p>
+                        <p className="text-zinc-500 text-sm leading-relaxed dark:text-zinc-400">{description}</p>
                         <div className="flex items-center gap-4">
                             <div className="flex items-center -space-x-2">
                                 {users.slice(0, 5).map((user) => (

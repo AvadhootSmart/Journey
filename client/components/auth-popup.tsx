@@ -13,6 +13,8 @@ import useUser from "@/store/user-store";
 import { LInput } from "./custom-input";
 import { PasswordInput } from "./password-input";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
   const { setUser, setToken } = useUser();
@@ -28,26 +30,43 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
   const [password, setPassword] = useState<string>("");
   const [type, setType] = useState<"Register" | "Login">("Login");
   const [open, setOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleRegister = async () => {
-    const response = await registerUser(email, username, password);
-    setEmail("");
-    setPassword("");
-    setUsername("");
+    try {
+      setIsLoading(true);
+      const response = await registerUser(email, username, password);
+      setEmail("");
+      setPassword("");
+      setUsername("");
 
-    setUser(response.user);
-    setOpen(false);
-    router.push("/profile");
+      setUser(response.user);
+      setOpen(false);
+      router.push("/profile");
+      toast.success("Account created successfully!");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
   const handleLogin = async () => {
-    const response = await loginUser(email, password);
-    setEmail("");
-    setPassword("");
+    try {
+      setIsLoading(true);
+      const response = await loginUser(email, password);
+      setEmail("");
+      setPassword("");
 
-    setToken(response.token);
-    setUser(response.user);
-    setOpen(false);
-    router.push("/profile");
+      setToken(response.token);
+      setUser(response.user);
+      setOpen(false);
+      router.push("/profile");
+      toast.success("Logged in successfully!");
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || "Login failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -66,6 +85,7 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
+              disabled={isLoading}
             />
             <LInput
               isRequired
@@ -74,10 +94,12 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               type="text"
+              disabled={isLoading}
             />
             <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
             <p className="text-sm text-gray-500">
               Already have an account?{" "}
@@ -86,12 +108,16 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
                   variant={"link"}
                   className="p-0"
                   onClick={() => setType("Login")}
+                  disabled={isLoading}
                 >
                   Login
                 </Button>
               </span>
             </p>
-            <Button onClick={handleRegister}>Submit</Button>
+            <Button onClick={handleRegister} disabled={isLoading}>
+              {isLoading && <Loader2 className="animate-spin" size={16} />}
+              Submit
+            </Button>
           </DialogContent>
         </Dialog>
       ) : (
@@ -113,10 +139,12 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="text"
+              disabled={isLoading}
             />
             <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
             <p className="text-sm text-gray-500 flex gap-1 items-center">
               New here??{" "}
@@ -125,6 +153,7 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
                   variant={"link"}
                   className="p-0"
                   onClick={() => setType("Register")}
+                  disabled={isLoading}
                 >
                   Create an account
                 </Button>
@@ -133,7 +162,10 @@ export const AuthPopup = ({ children }: { children: React.ReactNode }) => {
             <p className="text-sm text-gray-500">
               <span className="text-black"></span>
             </p>
-            <Button onClick={handleLogin}>Submit</Button>
+            <Button onClick={handleLogin} disabled={isLoading}>
+              {isLoading && <Loader2 className="animate-spin" size={16} />}
+              Submit
+            </Button>
           </DialogContent>
         </Dialog>
       )}

@@ -1,16 +1,12 @@
 import api from "@/config/axios.config";
-import { toast } from "sonner";
 
 export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post("/auth/login", { email, password });
-    if (response.status === 200) {
-      toast.success("Logged In successfully");
-    }
     return response.data;
   } catch (error) {
-    toast.error("Invalid email or password");
     console.error("auth error", error);
+    throw error;
   }
 };
 
@@ -25,13 +21,10 @@ export const registerUser = async (
       username,
       password,
     });
-    if (response.status === 201) {
-      toast.success("Account created successfully");
-    }
     return response.data;
   } catch (error) {
-    toast.error("Something went wrong, try again later");
     console.error("auth error", error);
+    throw error;
   }
 };
 
