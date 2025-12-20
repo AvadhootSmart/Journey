@@ -7,7 +7,7 @@
         "dev": "bun --watch run src/index.ts",
         "build": "prisma generate && prisma migrate deploy && tsc",
         "postinstall": "prisma generate",
-        "vercel-build": "bun build src/index.ts --out-dir dist"
+        "vercel-build": "pnpm build"
     },
     "devDependencies": {
         "@types/bun": "latest",
