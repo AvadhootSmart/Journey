@@ -17,5 +17,36 @@
       "sizes": "192x192",
       "type": "image/png"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Journal Calendar",
+      "short_name": "Calendar",
+      "description": "View your first journal's calendar",
+      "url": "/widget/calendar",
+      "icons": [
+        {
+          "src": "/icon.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Journal Calendar",
+      "description": "Quick view of your journal entries",
+      "tag": "journal-calendar",
+      "template": "journal-calendar",
+      "data": "journal-calendar",
+      "type": "application/json",
+      "screenshots": [
+        {
+          "src": "/icon.png",
+          "sizes": "192x192",
+          "label": "Journal Calendar Widget"
+        }
+      ]
+    }
   ]
 }
