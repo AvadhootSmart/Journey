@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Journey",
   description: "Journey - A Collaborative Journalling Platform",
   manifest: "/manifest.json",
+  icons: {
+    apple: "/icon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -33,6 +36,22 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Journey" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('PWA: beforeinstallprompt event fired');
+              });
+              window.addEventListener('appinstalled', () => {
+                console.log('PWA: App installed');
+              });
+            `,
+          }}
+        />
         <script
           async
           crossOrigin="anonymous"
